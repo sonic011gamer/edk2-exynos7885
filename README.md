@@ -30,7 +30,7 @@ Then ./firstrun.sh
 
 Finally, ./build.sh.
 
-Then fastboot boot uefi.img from lk2nd.
+Then flash in AP slot in ODIN.
 
 # Credits
 
