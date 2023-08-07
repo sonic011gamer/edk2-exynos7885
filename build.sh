@@ -7,4 +7,6 @@ set -e
 GCC5_AARCH64_PREFIX=aarch64-linux-gnu- build -s -n 0 -a AARCH64 -t GCC5 -p MSM8916Pkg/Devices/a10.dsc
 cat BootShim/BootShim.bin workspace/Build/MSM8916Pkg/DEBUG_GCC5/FV/MSM8916PKG_UEFI.fd > workspace/UEFI
 mkbootimg --kernel workspace/UEFI -o workspace/boot.img
-tar -c workspace/boot.img -f workspace/boot.tar
+cd workspace/
+tar -c boot.img -f boot.tar
+cd ..

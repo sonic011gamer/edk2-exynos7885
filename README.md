@@ -1,7 +1,7 @@
 Attempt to create a minimal EDK2 for Exynos 7885 devices
 
 ## Status
-Boots to assembly code, sets screen to a color and doesn't seem to be doing anything more.
+Boots up until MMU Init in PrePi.
 
 ## Building
 Tested on Ubuntu 22.04.

@@ -95,9 +95,8 @@ _GetStackBase:
   bne   _PrepareArguments
 
 _PrepareArguments:
-  mov   x0, x10
-  mov   x1, x11
-  mov   x2, x12
+  mov   x0, x11
+  mov   x1, x12
 
   // Move sec startup address into a data register
   // Ensure we're jumping to FV version of the code (not boot remapped alias)
@@ -108,8 +107,8 @@ _PrepareArguments:
 
   // Jump to PrePiCore C code
   //    x0 = MpId
-  //    x1 = UefiMemoryBase
-  //    x2 = StacksBase
+  //    x0 = UefiMemoryBase
+  //    x1 = StacksBase
   blr   x4
 
 _NeverReturn:

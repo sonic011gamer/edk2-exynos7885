@@ -145,10 +145,10 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes      = CacheAttributes;
 
   // EXYNOS7884B SOC peripherals
-//  VirtualMemoryTable[++Index].PhysicalBase  = EXYNOS7884B_PERIPH_BASE;
-//  VirtualMemoryTable[Index].VirtualBase     = EXYNOS7884B_PERIPH_BASE;
-//  VirtualMemoryTable[Index].Length          = EXYNOS7884B_PERIPH_SZ;
-//  VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  VirtualMemoryTable[++Index].PhysicalBase  = EXYNOS7884B_PERIPH_BASE;
+  VirtualMemoryTable[Index].VirtualBase     = EXYNOS7884B_PERIPH_BASE;
+  VirtualMemoryTable[Index].Length          = EXYNOS7884B_PERIPH_SZ;
+  VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
   // End of Table
   VirtualMemoryTable[++Index].PhysicalBase  = 0;
