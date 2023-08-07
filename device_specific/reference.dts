@@ -1,0 +1,24 @@
+// SPDX-License-Identifier: GPL-2.0-only
+
+/dts-v1/;
+
+/ {
+	// This is used by the bootloader to find the correct DTB
+	qcom,msm-id = <206 0>; // qcom,msm-id = <247 0>; for APQ8016
+	qcom,board-id = <0xCE08FF01 4>; /* FIXME: Check your downstream device tree */
+
+	model = "Samsung Galaxy J5 2016"; // FIXME
+	compatible = "samsung,j510f", "qcom,msm8916"; // FIXME
+	
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	// The bootloader gets really sad if it cannot find those nodes
+	chosen { };
+
+	memory@0 {
+		device_type = "memory";
+		/* We expect the bootloader to fill in the reg */
+		reg = <0 0 0 0>;
+	};
+};
