@@ -37,6 +37,10 @@
   gQcomBamProtocolGuid = { 0xacdd545a, 0xf1f6, 0x4272, { 0x81, 0xc5, 0x04, 0x93, 0xe3, 0x58, 0x05, 0x32 } }
 
 [PcdsFixedAtBuild.common]
+  # Memory allocation
+  gMSM8916PkgTokenSpaceGuid.PcdUefiMemPoolBase|0|UINT64|0x00000a106
+  gMSM8916PkgTokenSpaceGuid.PcdUefiMemPoolSize|0|UINT32|0x00000a107
+
   # Simple FrameBuffer
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE|BOOLEAN|1
   gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000|UINT32|0x0000a400 # 0x7C400000

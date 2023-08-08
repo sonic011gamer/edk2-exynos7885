@@ -1,7 +1,7 @@
 Attempt to create a minimal EDK2 for Exynos 7885 devices
 
 ## Status
-Boots up until MMU Init in PrePi.
+Boots until BDS phase.
 
 ## Building
 Tested on Ubuntu 22.04.

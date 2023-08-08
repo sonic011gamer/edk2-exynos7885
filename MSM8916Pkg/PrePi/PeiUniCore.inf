@@ -10,7 +10,7 @@
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = ArmPlatformPrePiUniCore
+  BASE_NAME                      = PrePi
   FILE_GUID                      = 3e401783-cc94-4fcd-97bc-bd35ac369d2f
   MODULE_TYPE                    = SEC
   VERSION_STRING                 = 1.0
@@ -18,11 +18,9 @@
 [Sources]
   PrePi.h
   PrePi.c
-  MainUniCore.c
 
-[Sources.ARM]
-  Arm/ArchPrePi.c
-  Arm/ModuleEntryPoint.S   | GCC
+[BuildOptions.AARCH64]
+  GCC:*_*_*_CC_FLAGS = -Werror -Wno-error=unused-function
 
 [Sources.AArch64]
   AArch64/ArchPrePi.c
@@ -34,6 +32,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   ArmPkg/ArmPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
+  MSM8916Pkg/MSM8916Pkg.dec
 
 [LibraryClasses]
   BaseLib
@@ -85,6 +84,7 @@
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize
 
   gArmPlatformTokenSpaceGuid.PcdCoreCount
+  gArmTokenSpaceGuid.PcdCpuVectorBaseAddress
 
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
 
@@ -97,6 +97,11 @@
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderData
+
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
+  gMSM8916PkgTokenSpaceGuid.PcdUefiMemPoolBase
+  gMSM8916PkgTokenSpaceGuid.PcdUefiMemPoolSize
 
 [Pcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
