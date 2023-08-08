@@ -1,7 +1,7 @@
 Attempt to create a minimal EDK2 for Exynos 7885 devices
 
 ## Status
-Boots until BDS phase.
+Boots to UEFI Shell.
 
 ## Building
 Tested on Ubuntu 22.04.
