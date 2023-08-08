@@ -16,7 +16,7 @@
 #
 ################################################################################
 [Defines]
-  PLATFORM_NAME                  = MSM8916Pkg
+  PLATFORM_NAME                  = EXYNOS7885Pkg
   PLATFORM_GUID                  = 28f1a3bf-193a-47e3-a7b9-5a435eaab2ee
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x00010019
@@ -24,9 +24,9 @@
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
-  FLASH_DEFINITION               = MSM8916Pkg/MSM8916Pkg.fdf
+  FLASH_DEFINITION               = EXYNOS7885Pkg/EXYNOS7885Pkg.fdf
 
-!include MSM8916Pkg/CommonDsc.dsc.inc
+!include EXYNOS7885Pkg/CommonDsc.dsc.inc
 
 [LibraryClasses]
   RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
@@ -39,7 +39,7 @@
 [LibraryClasses.common]
   OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
-  ArmPlatformLib|MSM8916Pkg/Library/MSM8916PkgLib/MSM8916PkgLib.inf
+  ArmPlatformLib|EXYNOS7885Pkg/Library/EXYNOS7885PkgLib/EXYNOS7885PkgLib.inf
   CompilerIntrinsicsLib|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
 
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
@@ -53,7 +53,7 @@
   DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
 
-  SerialPortLib|MSM8916Pkg/Library/InMemorySerialPortLib/InMemorySerialPortLib.inf
+  SerialPortLib|EXYNOS7885Pkg/Library/InMemorySerialPortLib/InMemorySerialPortLib.inf
   RealTimeClockLib|EmbeddedPkg/Library/VirtualRealTimeClockLib/VirtualRealTimeClockLib.inf
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
 
@@ -74,12 +74,12 @@
   VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
 
   # SimpleFbDxe
-  FrameBufferBltLib|MSM8916Pkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
+  FrameBufferBltLib|EXYNOS7885Pkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
 
-  SerialPortLib|MSM8916Pkg/Library/FrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
-  PlatformBootManagerLib|MSM8916Pkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
-  MemoryInitPeiLib|MSM8916Pkg/Library/MemoryInitPeiLib/PeiMemoryAllocationLib.inf
-  PlatformPeiLib|MSM8916Pkg/Library/PlatformPeiLib/PlatformPeiLib.inf
+  SerialPortLib|EXYNOS7885Pkg/Library/FrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
+  PlatformBootManagerLib|EXYNOS7885Pkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+  MemoryInitPeiLib|EXYNOS7885Pkg/Library/MemoryInitPeiLib/PeiMemoryAllocationLib.inf
+  PlatformPeiLib|EXYNOS7885Pkg/Library/PlatformPeiLib/PlatformPeiLib.inf
 
 [LibraryClasses.common.SEC]
   PrePiLib|EmbeddedPkg/Library/PrePiLib/PrePiLib.inf
@@ -159,7 +159,7 @@
   #
   # PEI Phase modules
   #
-  MSM8916Pkg/PrePi/PeiUniCore.inf
+  EXYNOS7885Pkg/PrePi/PeiUniCore.inf
 
   #
   # DXE
@@ -183,8 +183,8 @@
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
 
   MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
-  MSM8916Pkg/Drivers/ConSplitterDxe/ConSplitterDxe.inf
-  MSM8916Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+  EXYNOS7885Pkg/Drivers/ConSplitterDxe/ConSplitterDxe.inf
+  EXYNOS7885Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
   MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
   MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 
@@ -205,8 +205,8 @@
   #
   # Platform Dxes
   #
-  MSM8916Pkg/Drivers/MSM8916PkgDxe/MSM8916PkgDxe.inf
-  MSM8916Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+  EXYNOS7885Pkg/Drivers/EXYNOS7885PkgDxe/EXYNOS7885PkgDxe.inf
+  EXYNOS7885Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
 
   #
   # USB Host Support
@@ -243,12 +243,12 @@
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
   MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
-  MSM8916Pkg/AcpiTables/AcpiTables.inf
+  EXYNOS7885Pkg/AcpiTables/AcpiTables.inf
 
   #
   # SMBIOS Support
   #
-  MSM8916Pkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  EXYNOS7885Pkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
   #

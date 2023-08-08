@@ -28,10 +28,10 @@
 
 #define EXYNOS7884B_PERIPH_BASE              0x00000000
 #define EXYNOS7884B_PERIPH_SZ                0x15000000
-STATIC struct MSM8916PkgReservedMemory {
+STATIC struct EXYNOS7885PkgReservedMemory {
   EFI_PHYSICAL_ADDRESS         Offset;
   EFI_PHYSICAL_ADDRESS         Size;
-} MSM8916PkgReservedMemoryBuffer [] = {
+} EXYNOS7885PkgReservedMemoryBuffer [] = {
 /**  { 0x86000000, 0x00300000 },    // tz_apps_region
   { 0x86300000, 0x00100000 },    // smem_region
   { 0x86400000, 0x00280000 },    // tz/hyp_region
@@ -86,30 +86,30 @@ ArmPlatformGetVirtualMemoryMap (
   );
 
   NextHob.Raw = GetHobList ();
-  Count = sizeof (MSM8916PkgReservedMemoryBuffer) / sizeof (struct MSM8916PkgReservedMemory);
+  Count = sizeof (EXYNOS7885PkgReservedMemoryBuffer) / sizeof (struct EXYNOS7885PkgReservedMemory);
   while ((NextHob.Raw = GetNextHob (EFI_HOB_TYPE_RESOURCE_DESCRIPTOR, NextHob.Raw)) != NULL)
   {
     if (Index >= Count)
       break;
     if ((NextHob.ResourceDescriptor->ResourceType == EFI_RESOURCE_SYSTEM_MEMORY) &&
-        (MSM8916PkgReservedMemoryBuffer[Index].Offset >= NextHob.ResourceDescriptor->PhysicalStart) &&
-        ((MSM8916PkgReservedMemoryBuffer[Index].Offset + MSM8916PkgReservedMemoryBuffer[Index].Size) <=
+        (EXYNOS7885PkgReservedMemoryBuffer[Index].Offset >= NextHob.ResourceDescriptor->PhysicalStart) &&
+        ((EXYNOS7885PkgReservedMemoryBuffer[Index].Offset + EXYNOS7885PkgReservedMemoryBuffer[Index].Size) <=
          NextHob.ResourceDescriptor->PhysicalStart + NextHob.ResourceDescriptor->ResourceLength))
     {
       ResourceAttributes = NextHob.ResourceDescriptor->ResourceAttribute;
       ResourceLength = NextHob.ResourceDescriptor->ResourceLength;
       ResourceTop = NextHob.ResourceDescriptor->PhysicalStart + ResourceLength;
-      ReservedTop = MSM8916PkgReservedMemoryBuffer[Index].Offset + MSM8916PkgReservedMemoryBuffer[Index].Size;
+      ReservedTop = EXYNOS7885PkgReservedMemoryBuffer[Index].Offset + EXYNOS7885PkgReservedMemoryBuffer[Index].Size;
 
       // Create the System Memory HOB for the reserved buffer
       BuildResourceDescriptorHob (
         EFI_RESOURCE_MEMORY_RESERVED,
         EFI_RESOURCE_ATTRIBUTE_PRESENT,
-        MSM8916PkgReservedMemoryBuffer[Index].Offset,
-        MSM8916PkgReservedMemoryBuffer[Index].Size
+        EXYNOS7885PkgReservedMemoryBuffer[Index].Offset,
+        EXYNOS7885PkgReservedMemoryBuffer[Index].Size
       );
       // Update the HOB
-      NextHob.ResourceDescriptor->ResourceLength = MSM8916PkgReservedMemoryBuffer[Index].Offset -
+      NextHob.ResourceDescriptor->ResourceLength = EXYNOS7885PkgReservedMemoryBuffer[Index].Offset -
                                                    NextHob.ResourceDescriptor->PhysicalStart;
 
       // If there is some memory available on the top of the reserved memory then create a HOB

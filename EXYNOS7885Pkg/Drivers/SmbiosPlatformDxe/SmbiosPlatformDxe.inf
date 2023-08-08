@@ -37,7 +37,7 @@
   ArmPlatformPkg/ArmPlatformPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  MSM8916Pkg/MSM8916Pkg.dec
+  EXYNOS7885Pkg/EXYNOS7885Pkg.dec
 
 [LibraryClasses]
   ArmLib

@@ -12,7 +12,7 @@
 *
 **/
 
-#ifndef __MSM8916PKGDXE_H__
-#define __MSM8916PKGDXE_H__
+#ifndef __EXYNOS7885PKGDXE_H__
+#define __EXYNOS7885PKGDXE_H__
 
-#endif /* __MSM8916PKGDXE_H__ */
+#endif /* __EXYNOS7885PKGDXE_H__ */

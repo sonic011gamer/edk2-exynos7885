@@ -12,14 +12,14 @@
 
 [Defines]
   INF_VERSION                    = 0x0001001a
-  BASE_NAME                      = MSM8916PkgDxe
+  BASE_NAME                      = EXYNOS7885PkgDxe
   FILE_GUID                      = 422BB380-0FFB-41EC-B86E-AE70F8A02DA3
   MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
-  ENTRY_POINT                    = MSM8916PkgEntryPoint
+  ENTRY_POINT                    = EXYNOS7885PkgEntryPoint
 
 [Sources.common]
-  MSM8916PkgDxe.c
+  EXYNOS7885PkgDxe.c
 
 [Packages]
   EmbeddedPkg/EmbeddedPkg.dec

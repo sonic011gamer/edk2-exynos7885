@@ -12,7 +12,7 @@
 
 [Defines]
   INF_VERSION                    = 0x00010019
-  BASE_NAME                      = MSM8916PkgLib
+  BASE_NAME                      = EXYNOS7885PkgLib
   FILE_GUID                      = 61620091-45BA-4EFF-8F58-F7ABF228CEBC
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
@@ -33,9 +33,9 @@
   SerialPortLib
 
 [Sources.common]
-  MSM8916Pkg.c
-  MSM8916PkgHelper.S
-  MSM8916PkgMem.c
+  EXYNOS7885Pkg.c
+  EXYNOS7885PkgHelper.S
+  EXYNOS7885PkgMem.c
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdArmPrimaryCore

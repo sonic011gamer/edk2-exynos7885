@@ -16,7 +16,7 @@
   MdeModulePkg/MdeModulePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   ArmPkg/ArmPkg.dec
-  MSM8916Pkg/MSM8916Pkg.dec
+  EXYNOS7885Pkg/EXYNOS7885Pkg.dec
 
 [LibraryClasses]
   BaseLib
@@ -35,9 +35,9 @@
   gEfiCpuArchProtocolGuid
 
 [FixedPcd]
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferWidth
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferHeight
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferWidth
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferHeight
 
 [Guids]
   gEfiMdeModulePkgTokenSpaceGuid

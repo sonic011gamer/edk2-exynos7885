@@ -12,7 +12,7 @@
 
 [Defines]
   DEC_SPECIFICATION              = 0x0001001a
-  PACKAGE_NAME                   = MSM8916Pkg
+  PACKAGE_NAME                   = EXYNOS7885Pkg
   PACKAGE_GUID                   = 7eb1de03-3910-4d1d-84ce-c17b53636b9a
   PACKAGE_VERSION                = 0.1
 
@@ -29,7 +29,7 @@
   Include                        # Root include for the package
 
 [Guids.common]
-  gMSM8916PkgTokenSpaceGuid        = { 0x99a14446, 0xaad7, 0xe460, {0xb4, 0xe5, 0x1f, 0x79, 0xaa, 0xa4, 0x93, 0xfd } }
+  gEXYNOS7885PkgTokenSpaceGuid        = { 0x99a14446, 0xaad7, 0xe460, {0xb4, 0xe5, 0x1f, 0x79, 0xaa, 0xa4, 0x93, 0xfd } }
 
 [Protocols]
   gEFIDroidKeypadDeviceProtocolGuid = { 0xb27625b5, 0x0b6c, 0x4614, { 0xaa, 0x3c, 0x33, 0x13, 0xb5, 0x1d, 0x36, 0x46 } }
@@ -38,14 +38,14 @@
 
 [PcdsFixedAtBuild.common]
   # Memory allocation
-  gMSM8916PkgTokenSpaceGuid.PcdUefiMemPoolBase|0|UINT64|0x00000a106
-  gMSM8916PkgTokenSpaceGuid.PcdUefiMemPoolSize|0|UINT32|0x00000a107
+  gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolBase|0|UINT64|0x00000a106
+  gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolSize|0|UINT32|0x00000a107
 
   # Simple FrameBuffer
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE|BOOLEAN|1
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000|UINT32|0x0000a400 # 0x7C400000
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|1080|UINT32|0x0000a401
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|1920|UINT32|0x0000a402
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32|UINT32|0x0000a403
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|1080|UINT32|0x0000a404
-  gMSM8916PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|1920|UINT32|0x0000a405 
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000|UINT32|0x0000a400 # 0x7C400000
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|1080|UINT32|0x0000a401
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|1920|UINT32|0x0000a402
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32|UINT32|0x0000a403
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|1080|UINT32|0x0000a404
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|1920|UINT32|0x0000a405 
