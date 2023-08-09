@@ -3,8 +3,6 @@ Attempt to create a minimal EDK2 for Exynos 7885 devices
 ## Status
 Boots to UEFI Shell.
 
-## Tutorials
-
 ### Building
 Tested on Ubuntu 22.04.
 
@@ -20,7 +18,7 @@ You should have all three directories side by side.
 
 Next, install dependencies:
 
-18.04:
+22.04:
 
 ```
 sudo apt install build-essential uuid-dev iasl git nasm python3-distutils gcc-aarch64-linux-gnu
@@ -28,18 +26,18 @@ sudo apt install build-essential uuid-dev iasl git nasm python3-distutils gcc-aa
 
 Also see [EDK2 website](https://github.com/tianocore/tianocore.github.io/wiki/Using-EDK-II-with-Native-GCC#Install_required_software_from_apt)
 
-First mkdir workspace
+## Tutorials
 
-Then ./firstrun.sh
+First run ./firstrun.sh
 
-Finally, ./build.sh.
+Then, ./build.sh.
 
-Then flash in AP slot in ODIN.
+This should make a boot.tar image to be flashed in ODIN, you may need to adjust.
 
 ## Porting this project to other Exynos SOCs
 
 > [!NOTE]
-> This may get you to somewhat boot EDK2, but it may not reach shell at all and may crash.
+> This may get you to somewhat boot EDK2, however it may not reach shell at all and may crash/get stuck somewhere.
 
 ### What you will need
 
@@ -48,7 +46,7 @@ Then flash in AP slot in ODIN.
 - Access to TWRP
 - Android Image Kitchen
 - Device Tree Compiler
-- Your phones screen resolution 
+- Your phone's screen resolution 
 
 ### Grabbing files off your phone
 
@@ -62,27 +60,15 @@ Now grab the file onto your PC
 
 ```adb pull /tmp/boot.img```
 
-We also need the information about your phones memory allocations so we can find where to write stuff, like enabling framebuffer.
+We also need the information about your phone's memory allocations so we can find where to write stuff, like enabling framebuffer.
 
-To get it, in TWRP do the following commands
-
-```adb shell```
-
-```cat /proc/iomem>>/tmp/iomem.txt```
-
-Now grab the iomem
-
-```adb pull /tmp/iomem.txt```
+To get it, in TWRP do the following command:
+```adb pull /proc/iomem```
 
 Finally we need your phones DTB (Device Tree Blob)
 
-To get it, do the following command in TWRP
-
-```adb shell "cat /sys/firmware/fdt>>/tmp/fdt```
-
-Now grab the DTB
-
-```adb pull /tmp/fdt```
+To get it, do the following command in TWRP:
+```adb pull /sys/firmware/fdt```
 
 ###  Taking notes of what is needed
 
@@ -108,7 +94,7 @@ Now open devicetree.dts in a Text Editor, we're gonna look for the interrupt-con
 
 You want to take notes of 2 numbers, the first one being after the "interrupt-controller@", which in this case is 10100000, and the second one being after "reg = <reg 0x00 firstnum 0x1000 0x00" which in this case is 10102000.
 
-The final thing to look for is your bootloader framebuffer address, to find this do the following command while your device is in TWRP ```cat /proc/cmdline``` and look for "s3cfb.bootloaderfb=" or anything along the lines of that, as an example we will assume ```s3cfb.bootloaderfb=0xf1000000```, take note of the offset after the "=", which in this case is 0xf1000000.
+The final thing to look for is your bootloader framebuffer address, to find this do the following command while your device is in TWRP ```cat /proc/cmdline``` and look for "s3cfb.bootloaderfb=" or anything along the lines of that, as an example we will assume ```s3cfb.bootloaderfb=0xf1000000```, take note of the address after the "=", which in this case is 0xf1000000.
 
 Now you can proceed.
 
@@ -121,43 +107,48 @@ Go into EXYNOS7885Pkg/Devices and copy a10.dsc to (devicename).dsc, for example 
 
 Now theres only a couple things to edit here thankfully.
 
-First thing to edit is ```gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000```, replace "0x80000000" with 0x(Number of the memory base you noted down earlier)
+First thing to edit is ```gArmTokenSpaceGuid.PcdSystemMemoryBase```, replace "0x80000000" or whatever address it holds with 0x(Number of the memory base you noted down earlier)
 
 Final things to edit is the framebuffer area, to avoid boring you with more text ill just put the things needing to be edited.
 
-```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|(Framebuffer offset from earlier)```
+  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|(Framebuffer offset from earlier)```
+  
   ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|(Screen resolution width)```
+  
   ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|(Screen resolution height)```
+
   ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|(Screen resolution width)```
+  
   ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|(Screen resolution height)```
 
 After you've edited that you can save the file and close it.
 
 ### Correcting the interrupt controller addresses
 
-Open up EXYNOS7885Pkg/EXYNOS7885.dsc and go to line 115, Replace ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000``` with ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x(First interrupt number you noted)``` and then replace ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000``` with ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x(Second interrupt number you noted)```
+Open up EXYNOS7885Pkg/EXYNOS7885.dsc and replace ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000``` with ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x(First interrupt address you noted)``` after which  replace ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000``` with ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x(Second interrupt address you noted)```
 
-You can now save and close the file
+You can now save and close the file.
 
 ### Correcting decon address
 
-Go to https://godbolt.org/ and before doing anything chabge the compiler on the right to ARM64 GCC Trunk.
+Go to https://godbolt.org/ and before doing anything chabge the compiler on the right to ARM64 GCC 5.4.
 
 Then in the left paste
 
 ```
-void soc_init(void) {
-	*(int*) (0x(Decon_F noted from before) + 0x70) = 0x1281;
+void enableDecon()
+{
+	*(int*) (0x(decon_f noted from before) + 0x70) = 0x1281;
 }
 ```
 
-On the right is the assemply you want to use but make sure u replace ```soc_init():``` with ```enableDecon:```
+The assembly you'll want is in the middle.
 
 
 Go to EXYNOS7885Pkg/Library
 /EXYNOS7885PkgLib and open up "EXYNOS7885PkgHelper.S"
 
-Replace the ```enableDecon:``` function with the one you got from the online compiler then close and save the file.
+Replace the ```enableDecon:``` function with the one you got from the online compiler (except for the last ret) then close and save the file.
 
 ### Editing the build script
 
@@ -169,9 +160,11 @@ Now you can build with the steps above.
 
 ### Running EDK2 in your device
 
-After your device builds don't use the boot.img in workspace as the bootloader may not like it, Instead take the boot.img you dumped earlier and place it into Android Image Kitchen, unpack it with ```./unpackimg.sh boot.img``` then take the "UEFI" file from the workspace folder and put it into split_image under the name "boot.img-kernel", obviously replacing the old one, repack the image with ```./repackimg.sh```
+After your device builds don't use the boot.img in workspace as the bootloader may not like it, instead take the boot.img you dumped earlier and place it into Android Image Kitchen, unpack it with ```./unpackimg.sh boot.img``` then take the "UEFI" file from the workspace folder and put it into split_image under the name "boot.img-kernel", obviously replacing the old one, repack the image with ```./repackimg.sh```.
 
-You can now flash image-new.img onto your phone using whatever you want!
+Rename image-new.img to boot.img, then using 7zip (on windows) or tar on linux, archive it to a ``.tar``.
+
+You can now flash boot.tar onto your phone using ODIN3, Heimdall, or TWRP if you prefer.
 
 
 # Credits
@@ -180,4 +173,4 @@ SimpleFbDxe screen driver is from imbushuo's [Lumia950XLPkg](https://github.com/
 
 Zhuowei for making edk2-pixel3
 
-all my friends for supporting me (yes also mis012 :)
+All the people in ``EDKII pain and misery, struggles and disappointment`` on Discord.
