@@ -14,7 +14,7 @@
 [PcdsFixedAtBuild.common]
   # System Memory (1.5GB)
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x77000000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x80000000
   gEmbeddedTokenSpaceGuid.PcdPrePiStackBase|0x80C00000
   gEmbeddedTokenSpaceGuid.PcdPrePiStackSize|0x00040000      # 256K stack
   gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolBase|0x80D00000         # DXE Heap base address

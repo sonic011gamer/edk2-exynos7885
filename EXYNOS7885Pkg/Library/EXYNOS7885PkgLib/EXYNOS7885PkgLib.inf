@@ -35,7 +35,6 @@
 [Sources.common]
   EXYNOS7885Pkg.c
   EXYNOS7885PkgHelper.S
-  EXYNOS7885PkgMem.c
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdArmPrimaryCore
