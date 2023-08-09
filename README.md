@@ -121,7 +121,7 @@ Go into EXYNOS7885Pkg/Devices and copy a10.dsc to (devicename).dsc, for example 
 
 Now theres only a couple things to edit here thankfully.
 
-First thing to edit is "gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000", replace "0x80000000" with 0x(Number of the memory base you noted down earlier)
+First thing to edit is ```gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000```, replace "0x80000000" with 0x(Number of the memory base you noted down earlier)
 
 Final things to edit is the framebuffer area, to avoid boring you with more text ill just put the things needing to be edited.
 
@@ -135,7 +135,7 @@ After you've edited that you can save the file and close it.
 
 ### Correcting the interrupt controller addresses
 
-Open up EXYNOS7885Pkg/EXYNOS7885.dsc and go to line 115, Replace "gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000" with "gArmTokenSpaceGuid.PcdGicDistributorBase|0x(First interrupt number you noted)" and then replace "gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000" with "gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x(Second interrupt number you noted)"
+Open up EXYNOS7885Pkg/EXYNOS7885.dsc and go to line 115, Replace ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000``` with ```gArmTokenSpaceGuid.PcdGicDistributorBase|0x(First interrupt number you noted)``` and then replace ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000``` with ```gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x(Second interrupt number you noted)```
 
 You can now save and close the file
 
@@ -151,13 +151,13 @@ void soc_init(void) {
 }
 ```
 
-On the right is the assemply you want to use but make sure u replace "soc_init():" with "enableDecon:"
+On the right is the assemply you want to use but make sure u replace ```soc_init():``` with ```enableDecon:```
 
 
 Go to EXYNOS7885Pkg/Library
 /EXYNOS7885PkgLib and open up "EXYNOS7885PkgHelper.S"
 
-Replace the "enableDecon:" function with the one you got from the online compiler then close and save the file.
+Replace the ```enableDecon:``` function with the one you got from the online compiler then close and save the file.
 
 ### Editing the build script
 
