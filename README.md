@@ -125,11 +125,11 @@ First thing to edit is "gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000", repl
 
 Final things to edit is the framebuffer area, to avoid boring you with more text ill just put the things needing to be edited.
 
-gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|(Framebuffer offset from earlier)
-  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|(Screen resolution width)
-  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|(Screen resolution height)
-  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|(Screen resolution width)
-  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|(Screen resolution height)
+```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|(Framebuffer offset from earlier)```
+  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|(Screen resolution width)```
+  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|(Screen resolution height)```
+  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|(Screen resolution width)```
+  ```gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|(Screen resolution height)```
 
 After you've edited that you can save the file and close it.
 
