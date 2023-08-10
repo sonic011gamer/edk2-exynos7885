@@ -207,6 +207,7 @@
   #
   EXYNOS7885Pkg/Drivers/EXYNOS7885PkgDxe/EXYNOS7885PkgDxe.inf
   EXYNOS7885Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+  EXYNOS7885Pkg/Drivers/LogoDxe/LogoDxe.inf
 
   #
   # USB Host Support
