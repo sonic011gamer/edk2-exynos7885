@@ -10,7 +10,7 @@ First, clone EDK2.
 
 ```
 cd ..
-git clone https://github.com/tianocore/edk2.git --recursive
+git clone https://github.com/tianocore/edk2 --recursive -b edk2-stable202302
 git clone https://github.com/tianocore/edk2-platforms.git
 ```
 
@@ -165,6 +165,12 @@ After your device builds don't use the boot.img in workspace as the bootloader m
 Rename image-new.img to boot.img, then using 7zip (on windows) or tar on linux, archive it to a ``.tar``.
 
 You can now flash boot.tar onto your phone using ODIN3, Heimdall, or TWRP if you prefer.
+
+### Getting EDK2 shell fullscreen
+
+If you made it this far, congratulations but you're here to get the shell fullscreen not to get some kind of trophy. To make the shell fullscreen open, up ```EXYNOS7885Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsole.c```, go to line 293,
+
+```NewModeBuffer[ValidCount].Columns``` should equal your devices resolution width divided by 8 and ```NewModeBuffer[ValidCount].Rows``` should equal your devices resolution height divided by 19, obviously if any of the divisions have remainders (e.g 23.4) go down to the lowest whole number to be safe (e.g 23)
 
 
 # Credits
