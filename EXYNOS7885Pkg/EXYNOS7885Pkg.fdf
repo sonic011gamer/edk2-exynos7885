@@ -25,13 +25,13 @@
 ################################################################################
 
 [FD.EXYNOS7885PKG_UEFI]
-BaseAddress   = 0x80000000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
-Size          = 0x00200000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
+BaseAddress   = 0x90000000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
+Size          = 0x00900000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
 ErasePolarity = 1
 
 # This one is tricky, it must be: BlockSize * NumBlocks = Size
 BlockSize     = 0x00001000
-NumBlocks     = 0x200
+NumBlocks     = 0x900
 
 ################################################################################
 #
@@ -54,7 +54,7 @@ NumBlocks     = 0x200
 # Implement the Linux kernel header layout so that the loader will identify
 # it as something bootable, and execute it with a FDT pointer in x0 or r2.
 #
-0x00000000|0x00200000
+0x00000000|0x00900000
 gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
 FV = FVMAIN_COMPACT
 
@@ -172,6 +172,8 @@ READ_LOCK_STATUS   = TRUE
 
   INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
+  INF MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
+  INF EXYNOS7885Pkg/Drivers/BootRamDiskHelperDxe/BootRamDiskHelperDxe.inf 
   #
   # ACPI Support
   #
@@ -204,6 +206,18 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/DriverHealthManagerDxe/DriverHealthManagerDxe.inf
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   INF MdeModulePkg/Application/UiApp/UiApp.inf
+
+  ## Embedded RAMDisk (IMG format)
+  FILE FREEFORM = 650B7CD0-94F8-46CC-88DE-8C199D41EDA3 {
+  SECTION RAW = EXYNOS7885Pkg/RAMDisk/WinPE.img
+  SECTION UI = "Embedded RAMDisk"  
+  
+  }
+
+#  FILE APPLICATION = C57AD6B7-0515-40A8-9D21-551652854E37 {
+#  SECTION PE32 = EXYNOS7885Pkg/RAMDisk/bootaa64.efi
+#  SECTION UI = "EdkShell"
+#}
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8

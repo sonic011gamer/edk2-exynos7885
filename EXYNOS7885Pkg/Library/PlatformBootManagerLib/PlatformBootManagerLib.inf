@@ -80,6 +80,7 @@
   gEfiEndOfDxeEventGroupGuid
   gEfiTtyTermGuid
   gUefiShellFileGuid
+  gExynos7885PkgEmbeddedRamdiskGuid
 
 [Protocols]
   gEfiDevicePathProtocolGuid
@@ -88,5 +89,5 @@
   gEfiSimpleFileSystemProtocolGuid
   gEsrtManagementProtocolGuid
   gEfiUsb2HcProtocolGuid
-  gEFIDroidKeypadDeviceProtocolGuid
+#  gEFIDroidKeypadDeviceProtocolGuid
 

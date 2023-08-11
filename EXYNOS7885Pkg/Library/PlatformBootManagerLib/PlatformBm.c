@@ -312,7 +312,7 @@ AddOutput (
     ReportText));
 }
 
-STATIC
+/*STATIC
 VOID
 EFIAPI
 AddInput (
@@ -340,7 +340,7 @@ AddInput (
   DEBUG ((EFI_D_VERBOSE, "%a: %s: added to ConOut and ErrOut\n", __FUNCTION__,
     ReportText));
 }
-
+*/
 STATIC
 INTN
 PlatformRegisterBootOption (
@@ -432,7 +432,14 @@ PlatformRegisterOptionsAndKeys (
   VOID
   )
 {
+  INTN WinPEOption;
   INTN ShellOption;
+
+  WinPEOption = PlatformRegisterFvBootOption(
+      &gExynos7885PkgEmbeddedRamdiskGuid, 
+      L"Windows PE Ramdisk",
+      LOAD_OPTION_ACTIVE
+  );
 
   ShellOption = PlatformRegisterFvBootOption(
       &gUefiShellFileGuid, 
@@ -520,7 +527,7 @@ PlatformBootManagerBeforeConsole (
   // Now add the device path of all handles with QcomKeypadDeviceProtocolGuid
   // on them to ConIn.
   //
-  FilterAndProcess (&gEFIDroidKeypadDeviceProtocolGuid, NULL, AddInput);
+  //FilterAndProcess (&gEFIDroidKeypadDeviceProtocolGuid, NULL, AddInput);
   // Register setup key then
   PlatformRegisterSetupKey();
 
