@@ -168,7 +168,7 @@ You can now flash boot.tar onto your phone using ODIN3, Heimdall, or TWRP if you
 
 ### Getting EDK2 shell fullscreen
 
-If you made it this far, congratulations but you're here to get the shell fullscreen not to get some kind of trophy. To make the shell fullscreen open up ```EXYNOS7885Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsole.c```, go to line 293
+If you made it this far, congratulations but you're here to get the shell fullscreen not to get some kind of trophy. To make the shell fullscreen open, up ```EXYNOS7885Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsole.c```, go to line 293,
 
 ```NewModeBuffer[ValidCount].Columns``` should equal your devices resolution width divided by 8 and ```NewModeBuffer[ValidCount].Rows``` should equal your devices resolution height divided by 19, obviously if any of the divisions have remainders (e.g 23.4) go down to the lowest whole number to be safe (e.g 23)
 
