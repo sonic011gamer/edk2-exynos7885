@@ -24,7 +24,6 @@
 
 [Sources.AArch64]
   AArch64/ArchPrePi.c
-  AArch64/ProcessorSupport.S | GCC
   AArch64/ModuleEntryPoint.S
 
 [Packages]
