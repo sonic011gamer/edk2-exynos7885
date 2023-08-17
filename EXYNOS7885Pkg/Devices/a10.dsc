@@ -12,7 +12,7 @@
 !include EXYNOS7885Pkg/EXYNOS7885Pkg.dsc
 
 [PcdsFixedAtBuild.common]
-  # System Memory (2GB)
+  # System Memory (1.5GB)
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x80000000
   gEmbeddedTokenSpaceGuid.PcdPrePiStackBase|0x80C00000
@@ -20,16 +20,6 @@
   gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolBase|0x80D00000         # DXE Heap base address
   gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolSize|0x03300000         # UefiMemorySize, DXE heap size
   gArmTokenSpaceGuid.PcdCpuVectorBaseAddress|0x80C40000
-
-
-  #
-  # ARM General Interrupt Controller
-  #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000
-
-
-
 
   # Framebuffer (720x1280)
   gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x0ec000000

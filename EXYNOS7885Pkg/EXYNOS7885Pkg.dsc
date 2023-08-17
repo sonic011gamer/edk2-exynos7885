@@ -108,7 +108,13 @@
   # We only boot one processor here!
   gArmPlatformTokenSpaceGuid.PcdCoreCount|1
   gArmPlatformTokenSpaceGuid.PcdClusterCount|1
-  
+
+  #
+  # ARM General Interrupt Controller
+  #
+  gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000
+
   gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|0x12
   gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum|0x13
 
