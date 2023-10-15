@@ -64,7 +64,12 @@
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
 
-  ResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
+  ResetSystemLib|EXYNOS7885Pkg/Library/ResetSystemLib/ResetSystemLib.inf
+
+
+  #Keypad
+  # KeypadDeviceHelperLib|EXYNOS7885Pkg/Library/KeypadDeviceHelperLib/KeypadDeviceHelperLib.inf
+  # KeypadDeviceImplLib|EXYNOS7885Pkg/Library/KeypadDeviceImplLib/KeypadDeviceImplLib.inf
 
   # ARM PL011 UART Driver
   PL011UartClockLib|ArmPlatformPkg/Library/PL011UartClockLib/PL011UartClockLib.inf

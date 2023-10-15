@@ -112,11 +112,16 @@
   #
   # ARM General Interrupt Controller
   #
+  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|26000000
+  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum|13
+  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|14
+  gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum|11
+  gArmTokenSpaceGuid.PcdArmArchTimerHypIntrNum|10
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x12301000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12302000
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x12304000
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x12300000
 
-  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|0x12
-  gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum|0x13
+  gEmbeddedTokenSpaceGuid.PcdInterruptBaseAddress|0x12300000
 
   # GUID of the UI app
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile|{ 0x21, 0xaa, 0x2c, 0x46, 0x14, 0x76, 0x03, 0x45, 0x83, 0x6e, 0x8a, 0xb6, 0xf4, 0x66, 0x23, 0x31 }
@@ -142,14 +147,14 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
 
   [PcdsDynamicDefault.common]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0 # /8 = column
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|0 #/19 = row
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutColumn|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|720 # /8 = column
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|1520 #/19 = row
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|720
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|1520
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutColumn|90
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow|80
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|90
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|80
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform
@@ -198,6 +203,11 @@
   MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
 
   #
+  # Keypad
+  #
+  # EXYNOS7885Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
+  # EXYNOS7885Pkg/Drivers/KeypadDxe/KeypadDxe.inf
+  #
   # Virtual Keyboard
   #
   EmbeddedPkg/Drivers/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
@@ -239,6 +249,7 @@
   FatPkg/EnhancedFatDxe/Fat.inf
   EXYNOS7885Pkg/Drivers/BootRamDiskHelperDxe/BootRamDiskHelperDxe.inf 
   MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
+  MdeModulePkg/Universal/FvSimpleFileSystemDxe/FvSimpleFileSystemDxe.inf
 
   #
   # ACPI Support

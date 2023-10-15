@@ -66,6 +66,25 @@ void setFBcolor(char* colors) {
     char colors[3] = {0, 0, 0}; // Blue color (RGB format)
     setFBcolor(colors);
 
+	//char value;
+	//do {
+  //  MmioWrite32(0x11CB0060, 0);
+	//	value = *((char*)0x11CB0064);
+  //  //Nothing: 0xE2
+  //  //Vol up: 0xC2
+  //  //Vol down: 0xA2
+  //  //Power: 0x62
+  //  //Vol+Power : 0x42
+  //  //Vol-Power : 0x22
+  //  //Vol+Vol- : 0x82
+  //  //All buttons: 0x2
+//
+  //  DEBUG((EFI_D_INFO,"Value is %X\n", value));
+  //  if (value == 0x42)
+  //    break;
+	//} while (1);
+    
+
   // Declare UEFI region
   MemoryBase     = FixedPcdGet32(PcdSystemMemoryBase);
   MemorySize     = FixedPcdGet32(PcdSystemMemorySize);

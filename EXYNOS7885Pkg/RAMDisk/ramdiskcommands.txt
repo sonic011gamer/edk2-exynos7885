@@ -1,0 +1,7 @@
+dd if=/dev/zero of=image.img bs=1M count=40
+parted image.img
+mklabel gpt
+mkpart EFIESP fat32 0 100%
+sudo losetup --offset 17408 -f image.img
+sudo mkfs.fat -F 32 -n EFIESP /dev/loop0
+sudo losetup -d /dev/loop0
