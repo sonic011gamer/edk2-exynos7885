@@ -26,12 +26,12 @@
 
 [FD.EXYNOS7885PKG_UEFI]
 BaseAddress   = 0x90000000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
-Size          = 0x00b20000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
+Size          = 0x00b30000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
 ErasePolarity = 1
 
 # This one is tricky, it must be: BlockSize * NumBlocks = Size
 BlockSize     = 0x00001000
-NumBlocks     = 0xb20
+NumBlocks     = 0xb30
 
 ################################################################################
 #
@@ -54,7 +54,7 @@ NumBlocks     = 0xb20
 # Implement the Linux kernel header layout so that the loader will identify
 # it as something bootable, and execute it with a FDT pointer in x0 or r2.
 #
-0x00000000|0x00b20000
+0x00000000|0x00b30000
 gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
 FV = FVMAIN_COMPACT
 
@@ -174,8 +174,8 @@ APRIORI DXE {
   INF EXYNOS7885Pkg/Drivers/LogoDxe/LogoDxe.inf
 
 
-  # INF EXYNOS7885Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
-  # INF EXYNOS7885Pkg/Drivers/KeypadDxe/KeypadDxe.inf
+  INF EXYNOS7885Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
+  INF EXYNOS7885Pkg/Drivers/KeypadDxe/KeypadDxe.inf
   #
   # USB Host Support
   #

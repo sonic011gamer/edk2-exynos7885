@@ -44,7 +44,7 @@ KeypadDeviceDxeInitialize (
 
   Status = gBS->InstallMultipleProtocolInterfaces(
                   &ImageHandle,
-                  &gEFIDroidKeypadDeviceProtocolGuid,      
+                  &gExynos7885PkgKeypadDeviceProtocolGuid,      
                   &mInternalKeypadDevice,
                   &gEfiDevicePathProtocolGuid,         
                   &mInternalDevicePath,

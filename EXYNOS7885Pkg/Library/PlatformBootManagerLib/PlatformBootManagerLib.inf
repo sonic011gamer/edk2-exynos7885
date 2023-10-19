@@ -89,5 +89,5 @@
   gEfiSimpleFileSystemProtocolGuid
   gEsrtManagementProtocolGuid
   gEfiUsb2HcProtocolGuid
-#  gEFIDroidKeypadDeviceProtocolGuid
+  gExynos7885PkgKeypadDeviceProtocolGuid
 

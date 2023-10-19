@@ -22,7 +22,7 @@
   KeypadDeviceImplLib
 
 [Protocols]
-  gEFIDroidKeypadDeviceProtocolGuid
+  gExynos7885PkgKeypadDeviceProtocolGuid
   gEfiDevicePathProtocolGuid
 
 [Depex]

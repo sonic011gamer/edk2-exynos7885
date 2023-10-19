@@ -54,4 +54,4 @@
 [Protocols]
   gEfiSimpleTextInProtocolGuid                  ## BY_START
   gEfiSimpleTextInputExProtocolGuid             ## BY_START
-  gEFIDroidKeypadDeviceProtocolGuid
+  gExynos7885PkgKeypadDeviceProtocolGuid

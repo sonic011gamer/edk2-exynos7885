@@ -106,8 +106,8 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"Alpha"
 
   # We only boot one processor here!
-  gArmPlatformTokenSpaceGuid.PcdCoreCount|1
-  gArmPlatformTokenSpaceGuid.PcdClusterCount|1
+  gArmPlatformTokenSpaceGuid.PcdCoreCount|8
+  gArmPlatformTokenSpaceGuid.PcdClusterCount|2
 
   #
   # ARM General Interrupt Controller
@@ -205,8 +205,8 @@
   #
   # Keypad
   #
-  # EXYNOS7885Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
-  # EXYNOS7885Pkg/Drivers/KeypadDxe/KeypadDxe.inf
+  EXYNOS7885Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
+  EXYNOS7885Pkg/Drivers/KeypadDxe/KeypadDxe.inf
   #
   # Virtual Keyboard
   #

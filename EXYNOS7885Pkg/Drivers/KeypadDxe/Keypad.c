@@ -129,7 +129,7 @@ KeypadControllerDriverSupported (
   //
   Status = gBS->OpenProtocol (
                   Controller,
-                  &gEFIDroidKeypadDeviceProtocolGuid,
+                  &gExynos7885PkgKeypadDeviceProtocolGuid,
                   (VOID **) &KeypadDevice,
                   This->DriverBindingHandle,
                   Controller,
@@ -144,7 +144,7 @@ KeypadControllerDriverSupported (
   //
   gBS->CloseProtocol (
          Controller,
-         &gEFIDroidKeypadDeviceProtocolGuid,
+         &gExynos7885PkgKeypadDeviceProtocolGuid,
          This->DriverBindingHandle,
          Controller
          );
@@ -226,7 +226,7 @@ KeypadControllerDriverStart (
   //
   Status = gBS->OpenProtocol (
                   Controller,
-                  &gEFIDroidKeypadDeviceProtocolGuid,
+                  &gExynos7885PkgKeypadDeviceProtocolGuid,
                   (VOID **) &KeypadDevice,
                   This->DriverBindingHandle,
                   Controller,
@@ -401,7 +401,7 @@ ErrorExit:
 
   gBS->CloseProtocol (
          Controller,
-         &gEFIDroidKeypadDeviceProtocolGuid,
+         &gExynos7885PkgKeypadDeviceProtocolGuid,
          This->DriverBindingHandle,
          Controller
          );
@@ -486,7 +486,7 @@ KeypadControllerDriverStop (
 
   gBS->CloseProtocol (
          Controller,
-         &gEFIDroidKeypadDeviceProtocolGuid,
+         &gExynos7885PkgKeypadDeviceProtocolGuid,
          This->DriverBindingHandle,
          Controller
          );

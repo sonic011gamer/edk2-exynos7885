@@ -1,23 +1,16 @@
 #include <PiDxe.h>
 
-#include <Library/LKEnvLib.h>
-#include <Library/QcomPm8x41Lib.h>
-#include <Library/QcomGpioTlmmLib.h>
+
 #include <Library/KeypadDeviceImplLib.h>
 #include <Library/KeypadDeviceHelperLib.h>
 #include <Protocol/KeypadDevice.h>
-
-typedef enum {
-  KEY_DEVICE_TYPE_UNKNOWN,
-
-  KEY_DEVICE_TYPE_GPA,
-  KEY_DEVICE_TYPE_GPIO
-} KEY_DEVICE_TYPE;
+#include <Library/IoLib.h>
 
 typedef struct {
-  KEY_CONTEXT      EfiKeyContext;
-  BOOLEAN          IsValid;
-  KEY_DEVICE_TYPE  DeviceType;
+  KEY_CONTEXT EfiKeyContext;
+  UINT32 PinctrlBase;
+  UINT32 BankOffset;
+  UINT32 PinNum;
 } KEY_CONTEXT_PRIVATE;
 
 STATIC KEY_CONTEXT_PRIVATE KeyContextPower;
@@ -36,8 +29,9 @@ KeypadInitializeKeyContextPrivate (
   KEY_CONTEXT_PRIVATE  *Context
   )
 {
-  Context->IsValid = FALSE;
-  Context->DeviceType = KEY_DEVICE_TYPE_UNKNOWN;
+  Context->PinctrlBase = 0;
+  Context->BankOffset  = 0;
+  Context->PinNum      = 0;
 }
 
 STATIC
@@ -72,20 +66,23 @@ KeypadDeviceImplConstructor (
 
   // Configure keys
 
-  // Vol Up (115) , Camera Splash (766) and Camera Focus (528)
-  // go through TLMM GPIO
-  StaticContext = KeypadKeyCodeToKeyContext(115);
-  StaticContext->DeviceType = KEY_DEVICE_TYPE_GPA;
-  StaticContext->IsValid = TRUE;
+  // vol down (gpa1-6)
+  StaticContext              = KeypadKeyCodeToKeyContext(114);
+  StaticContext->PinctrlBase = 0x11CB0000;
+  StaticContext->BankOffset  = 0x60;
+  StaticContext->PinNum      = 6;
 
-  // Vol Down (114) and Power On (116) on through PMIC PON
-  StaticContext = KeypadKeyCodeToKeyContext(114);
-  StaticContext->DeviceType = KEY_DEVICE_TYPE_GPA;
-  StaticContext->IsValid = TRUE;
+  // vol up (gpa1-5)
+  StaticContext              = KeypadKeyCodeToKeyContext(115);
+  StaticContext->PinctrlBase = 0x11CB0000;
+  StaticContext->BankOffset  = 0x60;
+  StaticContext->PinNum      = 5;
 
-  StaticContext = KeypadKeyCodeToKeyContext(116);
-  StaticContext->DeviceType = KEY_DEVICE_TYPE_GPA;
-  StaticContext->IsValid = TRUE;
+  // power (gpa1-7)
+  StaticContext              = KeypadKeyCodeToKeyContext(116);
+  StaticContext->PinctrlBase = 0x11CB0000;
+  StaticContext->BankOffset  = 0x60;
+  StaticContext->PinNum      = 7;
 
   return RETURN_SUCCESS;
 }
@@ -106,30 +103,25 @@ EFI_STATUS EFIAPI KeypadDeviceImplReset (KEYPAD_DEVICE_PROTOCOL *This)
 
 EFI_STATUS KeypadDeviceImplGetKeys (KEYPAD_DEVICE_PROTOCOL *This, KEYPAD_RETURN_API *KeypadReturnApi, UINT64 Delta)
 {
-  UINT8    GpioStatus;
-  BOOLEAN  IsPressed;
-  UINTN    Index;
+    BOOLEAN IsPressed;
+    UINTN Index;
 
-  for (Index=0; Index<ARRAY_SIZE(KeyList); Index++) {
-    KEY_CONTEXT_PRIVATE *Context = KeyList[Index];
+    for (Index = 0; Index < (sizeof(KeyList) / sizeof(KeyList[0])); Index++) {
+        KEY_CONTEXT_PRIVATE *Context = KeyList[Index];
 
-    // check if this is a valid key
-    if (Context->IsValid == FALSE)
-      continue;
+        IsPressed = FALSE;
 
-    // get status
-    if (Context->DeviceType == KEY_DEVICE_TYPE_GPA) {
-      GpioStatus = gGpioTlmm->Get(Context->Gpio);
+  		UINT32 PinAddr = ((Context->PinctrlBase + Context->BankOffset) + 0x4);
+
+        UINT32 PinState = MmioRead32(PinAddr);
+
+        if ( !(PinState & (1 << Context->PinNum)) ) {
+        	IsPressed = TRUE;
+        }
+
+        LibKeyUpdateKeyStatus(
+            &Context->EfiKeyContext, KeypadReturnApi, IsPressed, Delta);
     }
-    else {
-      continue;
-    }
-    IsPressed = FALSE;
-
-    // update key status
-    IsPressed = TRUE;
-    LibKeyUpdateKeyStatus(&Context->EfiKeyContext, KeypadReturnApi, IsPressed, Delta);
-  }
 
   return EFI_SUCCESS;
 }

@@ -321,7 +321,7 @@ KeypadComponentNameGetControllerName (
   //
   // Check Controller's handle
   //
-  Status = EfiTestManagedDevice (ControllerHandle, gKeypadControllerDriver.DriverBindingHandle, &gEFIDroidKeypadDeviceProtocolGuid);
+  Status = EfiTestManagedDevice (ControllerHandle, gKeypadControllerDriver.DriverBindingHandle, &gExynos7885PkgKeypadDeviceProtocolGuid);
   if (EFI_ERROR (Status)) {
     return Status;
   }
