@@ -22,100 +22,125 @@
 
 #include "PrePi.h"
 
-VOID EFIAPI ProcessLibraryConstructorList(VOID);
+UINT64  mSystemMemoryEnd = FixedPcdGet64 (PcdSystemMemoryBase) +
+                           FixedPcdGet64 (PcdSystemMemorySize) - 1;
 
-VOID UartInit(VOID)
+UINTN Width = FixedPcdGet32(PcdMipiFrameBufferWidth);
+UINTN Height = FixedPcdGet32(PcdMipiFrameBufferHeight);
+UINTN Bpp = FixedPcdGet32(PcdMipiFrameBufferPixelBpp);
+UINTN FbAddr = FixedPcdGet32(PcdMipiFrameBufferAddress);
+
+VOID
+PaintScreen(
+  IN  UINTN   BgColor
+)
 {
-  SerialPortInitialize();
+  // Code from FramebufferSerialPortLib
+	char* Pixels = (void*)FixedPcdGet32(PcdMipiFrameBufferAddress);
 
-  DEBUG((EFI_D_INFO, "\nPEdeka on sexynos (AArch64)\n"));
-  DEBUG(
-      (EFI_D_INFO, "Firmware version %s built %a %a\n\n",
-       (CHAR16 *)PcdGetPtr(PcdFirmwareVersionString), __TIME__, __DATE__));
+	// Set color.
+	for (UINTN i = 0; i < Width; i++)
+	{
+		for (UINTN j = 0; j < Height; j++)
+		{
+			// Set pixel bit
+			for (UINTN p = 0; p < (Bpp / 8); p++)
+			{
+				*Pixels = (unsigned char)BgColor;
+				BgColor = BgColor >> 8;
+				Pixels++;
+			}
+		}
+	}
 }
 
-VOID Main (IN  UINT64  StartTimeStamp)
+/**
+  SEC main routine.
+  @param[in]  UefiMemoryBase  Start of the PI/UEFI memory region
+  @param[in]  StacksBase      Start of the stack
+  @param[in]  StartTimeStamp  Timer value at start of execution
+**/
+STATIC
+VOID
+PrePiMain (
+  IN  UINTN   UefiMemoryBase,
+  IN  UINTN   StacksBase,
+  IN  UINT64  StartTimeStamp
+  )
 {
   EFI_HOB_HANDOFF_INFO_TABLE  *HobList;
   EFI_STATUS                  Status;
+  CHAR8                       Buffer[100];
+  UINTN                       CharCount;
+  UINTN                       StacksSize;
+  FIRMWARE_SEC_PERFORMANCE    Performance;
 
-  UINTN MemoryBase     = 0;
-  UINTN MemorySize     = 0;
-  UINTN UefiMemoryBase = 0;
-  UINTN UefiMemorySize = 0;
-  UINTN StacksBase     = 0;
-  UINTN StacksSize     = 0;
-  
-  // Architecture-specific initialization
-  // Enable Floating Point
-  ArmEnableVFP();
+  // Initialize the architecture specific bits
+  ArchInitialize ();
 
-  /* Enable program flow prediction, if supported */
-  ArmEnableBranchPrediction();
+  // Paint screen to BLACK
+  PaintScreen(0);
 
-void setFBcolor(char* colors) {
-    char* base = (char*)0x0ec000000ull;
-    for (int i = 0; i < 0x00800000; i += 4) {
-        base[i] = colors[0];      // Blue component
-        base[i + 1] = colors[1];  // Green component
-        base[i + 2] = colors[2];  // Red component
-        base[i + 3] = 255;        // Full opacity
-    }
-}
 
-    char colors[3] = {0, 0, 0}; // Blue color (RGB format)
-    setFBcolor(colors);
+  // Initialize the Serial Port
+  SerialPortInitialize ();
+  CharCount = AsciiSPrint (
+                Buffer,
+                sizeof (Buffer),
+                "UEFI firmware (version %s built at %a on %a)\n\r",
+                (CHAR16 *)PcdGetPtr (PcdFirmwareVersionString),
+                __TIME__,
+                __DATE__
+                );
+  SerialPortWrite ((UINT8 *)Buffer, CharCount);
 
-  // Declare UEFI region
-  MemoryBase     = FixedPcdGet32(PcdSystemMemoryBase);
-  MemorySize     = FixedPcdGet32(PcdSystemMemorySize);
-  UefiMemoryBase = FixedPcdGet32(PcdUefiMemPoolBase);
-  UefiMemorySize = FixedPcdGet32(PcdUefiMemPoolSize);
-  StacksSize     = FixedPcdGet32(PcdPrePiStackSize);
-  StacksBase     = UefiMemoryBase + UefiMemorySize - StacksSize;
+  DEBUG((
+        EFI_D_INFO | EFI_D_LOAD,
+        "UEFI Memory Base = 0x%p, Stack Base = 0x%p\n",
+        UefiMemoryBase,
+        StacksBase
+    ));
 
-  DEBUG(
-      (EFI_D_INFO | EFI_D_LOAD,
-       "UEFI Memory Base = 0x%llx, Size = 0x%llx, Stack Base = 0x%llx, Stack "
-       "Size = 0x%llx\n",
-       (VOID *)UefiMemoryBase, UefiMemorySize, (VOID *)StacksBase, StacksSize));
+  // Initialize the Debug Agent for Source Level Debugging
+  InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
+  SaveAndSetDebugTimerInterrupt (TRUE);
 
   // Declare the PI/UEFI memory region
-  // Set up HOB
-  HobList = HobConstructor(
-      (VOID *)UefiMemoryBase, UefiMemorySize, (VOID *)UefiMemoryBase,
-      (VOID *)StacksBase);
+  HobList = HobConstructor (
+              (VOID *)UefiMemoryBase,
+              FixedPcdGet32 (PcdSystemMemoryUefiRegionSize),
+              (VOID *)UefiMemoryBase,
+              (VOID *)StacksBase // The top of the UEFI Memory is reserved for the stacks
+              );
   PrePeiSetHobList (HobList);
 
-  // Invalidate cache
-  InvalidateDataCacheRange(
-      (VOID *)(UINTN)PcdGet64(PcdFdBaseAddress), PcdGet32(PcdFdSize));
+  // Initialize MMU and Memory HOBs (Resource Descriptor HOBs)
+  Status = MemoryPeim (UefiMemoryBase, FixedPcdGet32 (PcdSystemMemoryUefiRegionSize));
+  ASSERT_EFI_ERROR (Status);
 
-  // Initialize MMU
-  Status = MemoryPeim(UefiMemoryBase, UefiMemorySize);
+  // Create the Stacks HOB
+  StacksSize = PcdGet32 (PcdCPUCorePrimaryStackSize);
 
-  if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Failed to configure MMU\n"));
-    CpuDeadLoop();
-  }
-
-  DEBUG((EFI_D_LOAD | EFI_D_INFO, "MMU configured from device config\n"));
-
-  // Add HOBs
-  BuildStackHob ((UINTN)StacksBase, StacksSize);
+  BuildStackHob (StacksBase, StacksSize);
 
   // TODO: Call CpuPei as a library
-  BuildCpuHob (40, PcdGet8 (PcdPrePiCpuIoSize));
+  BuildCpuHob (ArmGetPhysicalAddressBits (), PcdGet8 (PcdPrePiCpuIoSize));
+
+  // Store timer value logged at the beginning of firmware image execution
+  Performance.ResetEnd = GetTimeInNanoSecond (StartTimeStamp);
+
+  // Build SEC Performance Data Hob
+  BuildGuidDataHob (&gEfiFirmwarePerformanceGuid, &Performance, sizeof (Performance));
 
   // Set the Boot Mode
-  SetBootMode (BOOT_WITH_FULL_CONFIGURATION);
+  SetBootMode (ArmPlatformGetBootMode ());
 
   // Initialize Platform HOBs (CpuHob and FvHob)
   Status = PlatformPeim ();
   ASSERT_EFI_ERROR (Status);
 
   // Now, the HOB List has been initialized, we can register performance information
-  //PERF_START (NULL, "PEI", NULL, StartTimeStamp);
+  PERF_START (NULL, "PEI", NULL, StartTimeStamp);
 
   // SEC phase needs to run library constructors by hand.
   ProcessLibraryConstructorList ();
@@ -130,8 +155,31 @@ void setFBcolor(char* colors) {
 }
 
 VOID
-CEntryPoint ()
+CEntryPoint (
+  IN  UINTN  MpId,
+  IN  UINTN  UefiMemoryBase,
+  IN  UINTN  StacksBase
+  )
 {
-  UartInit();
-  Main(0);
+  UINT64  StartTimeStamp;
+
+  // Initialize the platform specific controllers
+  ArmPlatformInitialize (MpId);
+
+  StartTimeStamp = 0;
+
+  // Data Cache enabled on Primary core when MMU is enabled.
+  ArmDisableDataCache ();
+  // Invalidate instruction cache
+  ArmInvalidateInstructionCache ();
+  // Enable Instruction Caches on all cores.
+  ArmEnableInstructionCache ();
+
+  // Wait the Primary core has defined the address of the Global Variable region (event: ARM_CPU_EVENT_DEFAULT)
+  ArmCallWFE ();
+
+  PrePiMain (UefiMemoryBase, StacksBase, StartTimeStamp);
+
+  // DXE Core should always load and never return
+  ASSERT (FALSE);
 }

@@ -46,8 +46,7 @@ typedef struct {
 #define RtCode EfiRuntimeServicesCode
 #define MmIO EfiMemoryMappedIO
 
-#define NS_DEVICE ARM_MEMORY_REGION_ATTRIBUTE_NONSECURE_DEVICE
-#define DEVICE ARM_MEMORY_REGION_ATTRIBUTE_NONSECURE_DEVICE
+#define DEVICE ARM_MEMORY_REGION_ATTRIBUTE_DEVICE
 #define WRITE_THROUGH ARM_MEMORY_REGION_ATTRIBUTE_WRITE_THROUGH
 #define WRITE_THROUGH_XN ARM_MEMORY_REGION_ATTRIBUTE_WRITE_THROUGH
 #define WRITE_BACK ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK
@@ -61,7 +60,7 @@ static ARM_MEMORY_REGION_DESCRIPTOR_EX gDeviceMemoryDescriptorEx[] = {
 */
 
 //--------------------- Register ---------------------
-    {"Periphs",           0x00000000, 0x15000000,  AddMem, MEM_RES, UNCACHEABLE,  RtCode,   NS_DEVICE},
+    {"Periphs",           0x00000000, 0x15000000,  AddMem, MEM_RES, UNCACHEABLE,  RtCode,   DEVICE},
 
 //--------------------- DDR --------------------- */
 

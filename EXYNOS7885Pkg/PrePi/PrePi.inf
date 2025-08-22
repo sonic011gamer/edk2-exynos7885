@@ -19,8 +19,9 @@
   PrePi.h
   PrePi.c
 
-[BuildOptions.AARCH64]
-  GCC:*_*_*_CC_FLAGS = -Werror -Wno-error=unused-function
+[Sources.ARM]
+  Arm/ArchPrePi.c
+  Arm/ModuleEntryPoint.S   | GCC
 
 [Sources.AArch64]
   AArch64/ArchPrePi.c
@@ -48,7 +49,6 @@
   DebugAgentLib
   PrePiLib
   ArmPlatformLib
-  ArmPlatformStackLib
   MemoryAllocationLib
   HobLib
   PrePiHobListPointerLib
@@ -64,14 +64,14 @@
 
 [FeaturePcd]
   gEmbeddedTokenSpaceGuid.PcdPrePiProduceMemoryTypeInformationHob
-  gArmPlatformTokenSpaceGuid.PcdSendSgiToBringUpSecondaryCores
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
 
-[FixedPcd]
+[FixedPcd.ARM]
   gArmTokenSpaceGuid.PcdVFPEnabled
 
+[FixedPcd]
   gArmTokenSpaceGuid.PcdFdBaseAddress
   gArmTokenSpaceGuid.PcdFdSize
 
@@ -79,12 +79,10 @@
   gArmTokenSpaceGuid.PcdFvSize
 
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize
 
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize
 
   gArmPlatformTokenSpaceGuid.PcdCoreCount
-  gArmTokenSpaceGuid.PcdCpuVectorBaseAddress
 
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
 
@@ -98,10 +96,10 @@
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderData
 
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
-  gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolBase
-  gEXYNOS7885PkgTokenSpaceGuid.PcdUefiMemPoolSize
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferWidth
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferHeight
+  gEXYNOS7885PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp
 
 [Pcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase

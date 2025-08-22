@@ -13,6 +13,8 @@
 #
 #
 
+!include MdePkg/MdeLibs.dsc.inc
+
 [LibraryClasses.common]
 !if $(TARGET) == RELEASE
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
@@ -57,14 +59,10 @@
   CacheMaintenanceLib|ArmPkg/Library/ArmCacheMaintenanceLib/ArmCacheMaintenanceLib.inf
   DefaultExceptionHandlerLib|ArmPkg/Library/DefaultExceptionHandlerLib/DefaultExceptionHandlerLib.inf
   CpuExceptionHandlerLib|ArmPkg/Library/ArmExceptionLib/ArmExceptionLib.inf
-  ArmDisassemblerLib|ArmPkg/Library/ArmDisassemblerLib/ArmDisassemblerLib.inf
-  ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
-  ArmGicArchLib|ArmPkg/Library/ArmGicArchLib/ArmGicArchLib.inf
-  ArmPlatformStackLib|ArmPlatformPkg/Library/ArmPlatformStackLib/ArmPlatformStackLib.inf
-  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
-  ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
+  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
+  ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
 
-  ResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
+  ResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
 
   # ARM PL011 UART Driver
   PL011UartClockLib|ArmPlatformPkg/Library/PL011UartClockLib/PL011UartClockLib.inf
@@ -88,11 +86,12 @@
 
   SemihostLib|ArmPkg/Library/SemihostLib/SemihostLib.inf
 
+  ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
   TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
   AuthVariableLib|MdeModulePkg/Library/AuthVariableLibNull/AuthVariableLibNull.inf
 
   # BDS Libraries
-  FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
+  FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
   UefiDevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
 
   VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
@@ -113,21 +112,19 @@
   FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
   EdkiiSystemCapsuleLib|SignedCapsulePkg/Library/EdkiiSystemCapsuleLib/EdkiiSystemCapsuleLib.inf
   IniParsingLib|SignedCapsulePkg/Library/IniParsingLib/IniParsingLib.inf
-
+  ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
   #
   # It is not possible to prevent the ARM compiler for generic intrinsic functions.
   # This library provides the instrinsic functions generate by a given compiler.
   # And NULL mean link this library into all ARM images.
   #
-  NULL|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
-
-  # Add support for GCC stack protector
-  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
+  NULL|MdePkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
 
 [LibraryClasses.common.SEC]
-  ArmGicArchLib|ArmPkg/Library/ArmGicArchSecLib/ArmGicArchSecLib.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  
+
 
 [LibraryClasses.common.PEI_CORE]
   HobLib|MdePkg/Library/PeiHobLib/PeiHobLib.inf
@@ -164,7 +161,7 @@
   MemoryInitPeiLib|EXYNOS7885Pkg/Library/MemoryInitPeiLib/PeiMemoryAllocationLib.inf
   PlatformPeiLib|EXYNOS7885Pkg/Library/PlatformPeiLib/PlatformPeiLib.inf
   PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
-  ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuPeiLib.inf
+  ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuPeiLib.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
 
 [LibraryClasses.common.DXE_CORE]
@@ -222,6 +219,10 @@
   RVCT:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
   GCC:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
 
+[BuildOptions.AARCH64]
+  GCC:*_*_*_CC_FLAGS = -mstrict-align -march=armv8-a -fno-stack-protector -D DISABLE_NEW_DEPRECATED_INTERFACES
+  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000
+
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
   GCC:*_*_ARM_DLINK_FLAGS = -z common-page-size=0x1000
   GCC:*_*_AARCH64_DLINK_FLAGS = -z common-page-size=0x10000
@@ -238,16 +239,11 @@
   gEfiMdePkgTokenSpaceGuid.PcdComponentName2Disable|TRUE
   gEfiMdePkgTokenSpaceGuid.PcdDriverDiagnostics2Disable|TRUE
 
-  # Use the Vector Table location in CpuDxe. We will not copy the Vector Table at PcdCpuVectorBaseAddress
-  gArmTokenSpaceGuid.PcdRelocateVectorTable|FALSE
-
   gEmbeddedTokenSpaceGuid.PcdPrePiProduceMemoryTypeInformationHob|TRUE
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
-
-  gArmTokenSpaceGuid.PcdArmGicV3WithV2Legacy|FALSE
 
 [PcdsFixedAtBuild.common]
   #
@@ -320,7 +316,6 @@
   # Set timer interrupt to be triggerred in 1ms to avoid missing
   # serial terminal input characters.
   gEmbeddedTokenSpaceGuid.PcdTimerPeriod|10000
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultReceiveFifoDepth|32
 
 [PcdsDynamicHii.common.DEFAULT]
